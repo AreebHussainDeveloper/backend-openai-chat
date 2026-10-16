@@ -37,7 +37,7 @@
     "class-validator": "^0.15.1",
     "handlebars": "^4.7.10",
     "nodemailer": "^10.1.0",
-    "openai": "^7.32.0",
+    "openai": "^7.34.0",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "pg": "^8.23.1",
