@@ -1,7 +1,7 @@
-
 import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigService } from '@nestjs/config';
 import { AiService } from './ai.service.js';
+import { describe, it, expect, beforeEach, jest } from '@jest/globals';
 
 describe('AiService', () => {
   let service: AiService;
