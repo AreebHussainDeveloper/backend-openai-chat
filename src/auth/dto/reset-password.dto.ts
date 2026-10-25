@@ -7,7 +7,7 @@ export class ResetPasswordDto {
   @IsNotEmpty()
   resetToken: string;
 
-  @ApiProperty({ example: 'NewStrongPassword123' })
+  @ApiProperty({ example: '123456789' })
   @IsString()
   @IsNotEmpty()
   @MinLength(8)

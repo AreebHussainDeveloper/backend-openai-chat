@@ -5,9 +5,10 @@ import { User } from '../users/user.entity.js';
 import { AuthService } from './auth.service.js';
 import { AuthController } from './auth.controller.js';
 import { MailModule } from '../mail/mail.module.js';
+import { DashboardUser } from './entities/dashboard-user.entity.js';
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, DashboardUser]),
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'secret',
       signOptions: { expiresIn: '1h' },

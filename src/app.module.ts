@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module.js';
 import { MailModule } from './mail/mail.module.js';
 import { ChatModule } from './chat/chat.module.js';
 import { AiModule } from './ai/ai.module.js';
+import { ProductsModule } from './products/products.module.js';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { AiModule } from './ai/ai.module.js';
     MailModule,
     ChatModule,
     AiModule,
+    ProductsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

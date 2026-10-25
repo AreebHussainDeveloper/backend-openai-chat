@@ -11,4 +11,7 @@ export const ErrorMessages: Record<ErrorCodes, string> = {
   [ErrorCodes.USER_DOESNOT_EXIT]: 'Email address does not exist.',
   [ErrorCodes.PRODUCT_WITH_THIS_NAME_ALREADY_EXISTS]:
     'A product with this name already exists',
+  [ErrorCodes.FRONTEND_URL_NOT_CONFIGURED]: 'FRONTEND_URL is not configured',
+  [ErrorCodes.MULTIPLE_PRODUCT_THUMBNAILS]:
+    'Only one image can be marked as the thumbnail',
 };

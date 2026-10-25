@@ -6,6 +6,8 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
+import { ErrorCodes } from '../../common/constants/error-codes.enum.js';
+import { ErrorMessages } from '../../common/constants/error-messages.js';
 
 interface JwtPayload {
   sub: number;
@@ -53,7 +55,9 @@ export class JwtAuthGuard implements CanActivate {
 
       return true;
     } catch {
-      throw new UnauthorizedException('Invalid or expired token');
+      throw new UnauthorizedException(
+        ErrorMessages[ErrorCodes.INVALID_OR_EXPIRED_TOKEN],
+      );
     }
   }
 }
