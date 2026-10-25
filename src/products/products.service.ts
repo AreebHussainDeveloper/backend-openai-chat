@@ -72,7 +72,7 @@ export class ProductsService {
     });
 
     if (!product) {
-      throw new NotFoundException('Product not found');
+      throw new NotFoundException(ErrorMessages[ErrorCodes.PRODUCT_NOT_FOUND]);
     }
 
     this.validateThumbnail(dto.image);
@@ -102,23 +102,47 @@ export class ProductsService {
     const result = await this.productRepository.delete(id);
 
     if (!result.affected) {
-      throw new NotFoundException('Product not found');
+      throw new NotFoundException(ErrorMessages[ErrorCodes.PRODUCT_NOT_FOUND]);
     }
 
     return { message: 'Product deleted successfully' };
   }
 
   private throwIfDuplicateProductValue(error: unknown): void {
-    if (
-      error instanceof QueryFailedError &&
-      'code' in error &&
-      error.code === '23505'
-    ) {
-      throw new ConflictException(
-        'SKU, barcode, or product URL already exists',
-      );
+    if (error instanceof QueryFailedError && 'driverError' in error) {
+      const driverError = error.driverError as {
+        code?: string;
+        constraint?: string;
+      };
+
+      if (driverError.code === '23505') {
+        const constraint = driverError.constraint ?? '';
+
+        if (constraint.includes('sku')) {
+          throw new ConflictException(
+            ErrorMessages[ErrorCodes.PRODUCT_SKU_ALREADY_EXISTS],
+          );
+        }
+
+        if (constraint.toLowerCase().includes('barcode')) {
+          throw new ConflictException(
+            ErrorMessages[ErrorCodes.PRODUCT_BARCODE_ALREADY_EXISTS],
+          );
+        }
+
+        if (constraint.toLowerCase().includes('producturl')) {
+          throw new ConflictException(
+            ErrorMessages[ErrorCodes.PRODUCT_URL_ALREADY_EXISTS],
+          );
+        }
+
+        throw new ConflictException(
+          ErrorMessages[ErrorCodes.PRODUCT_UNIQUE_VALUE_ALREADY_EXISTS],
+        );
+      }
     }
   }
+
   async getWebsiteProducts() {
     const products = await this.productRepository.find({
       select: {
@@ -147,5 +171,18 @@ export class ProductsService {
     });
 
     return products.map((product) => this.withThumbnail(product));
+  }
+
+  
+  async getDashboardProductById(id: number) {
+    const product = await this.productRepository.findOne({
+      where: { id },
+    });
+
+    if (!product) {
+      throw new NotFoundException('Product not found');
+    }
+
+    return this.withThumbnail(product);
   }
 }

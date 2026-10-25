@@ -58,14 +58,19 @@ export class ProductsController {
     return this.productsService.create(dto);
   }
 
+  @Get(PRODUCTS_API_OPTIONS.dashboardById.path)
+  @UseGuards(DashboardAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation(PRODUCTS_API_OPTIONS.dashboardById.operation)
+  getDashboardProductById(@Param('id', ParseIntPipe) id: number) {
+    return this.productsService.getDashboardProductById(id);
+  }
+
   @Patch(PRODUCTS_API_OPTIONS.update.path)
   @UseGuards(DashboardAuthGuard)
   @ApiBearerAuth()
   @ApiOperation(PRODUCTS_API_OPTIONS.update.operation)
-  update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() dto: UpdateProductDto,
-  ) {
+  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateProductDto) {
     return this.productsService.update(id, dto);
   }
 

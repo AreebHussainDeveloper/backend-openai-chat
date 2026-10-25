@@ -14,4 +14,10 @@ export const ErrorMessages: Record<ErrorCodes, string> = {
   [ErrorCodes.FRONTEND_URL_NOT_CONFIGURED]: 'FRONTEND_URL is not configured',
   [ErrorCodes.MULTIPLE_PRODUCT_THUMBNAILS]:
     'Only one image can be marked as the thumbnail',
+  [ErrorCodes.PRODUCT_NOT_FOUND]: 'Product not found',
+  [ErrorCodes.PRODUCT_SKU_ALREADY_EXISTS]: 'SKU already exists',
+  [ErrorCodes.PRODUCT_BARCODE_ALREADY_EXISTS]: 'Barcode already exists',
+  [ErrorCodes.PRODUCT_URL_ALREADY_EXISTS]: 'Product URL already exists',
+  [ErrorCodes.PRODUCT_UNIQUE_VALUE_ALREADY_EXISTS]:
+    'SKU, barcode, or product URL already exists',
 };

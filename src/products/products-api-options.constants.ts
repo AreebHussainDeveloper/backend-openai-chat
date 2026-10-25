@@ -10,6 +10,10 @@ export const PRODUCTS_API_OPTIONS = {
     path: 'dashboard',
     operation: { summary: 'Get all products for dashboard' },
   },
+  dashboardById: {
+    path: 'dashboard/:id',
+    operation: { summary: 'Get a product by ID for dashboard' },
+  },
   create: {
     path: '',
     operation: { summary: 'Create a product (dashboard account only)' },
