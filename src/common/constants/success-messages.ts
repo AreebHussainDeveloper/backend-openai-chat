@@ -7,4 +7,5 @@ export const SuccessMessages: Record<SuccessCodes, string> = {
   [SuccessCodes.PASSWORD_RESET_EMAIL_SENT]:
     'If this email is registered, a reset link has been sent.',
   [SuccessCodes.USER_DELETED_SUCCESSFULLY]: 'User deleted successfully',
+  [SuccessCodes.PRODUCT_DELETED_SUCCESSFULLY]: 'Product deleted successfully',
 };

@@ -62,6 +62,9 @@ export class Product {
   @Column({ type: 'integer', default: 0 })
   minimumStockThreshold: number;
 
+  @Column({ type: 'boolean', default: false })
+  visiableOnWebsite: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
 

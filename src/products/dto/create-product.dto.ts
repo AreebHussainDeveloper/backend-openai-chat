@@ -1,6 +1,7 @@
 import { Type } from 'class-transformer';
 import {
   IsArray,
+  IsBoolean,
   IsInt,
   IsNumber,
   IsOptional,
@@ -86,4 +87,13 @@ export class CreateProductDto {
   @IsInt()
   @Min(0)
   minimumStockThreshold = 0;
+
+  @ApiPropertyOptional({
+    example: true,
+    default: false,
+    description: 'Whether this product should be visible on the public website',
+  })
+  @IsOptional()
+  @IsBoolean()
+  visiableOnWebsite = false;
 }

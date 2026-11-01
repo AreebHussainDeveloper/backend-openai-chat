@@ -11,7 +11,12 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiParam,
+  ApiTags,
+} from '@nestjs/swagger';
 import { DashboardAuthGuard } from '../auth/guards/dashboard-auth.guard.js';
 import {
   PRODUCTS_API_OPTIONS,
@@ -39,6 +44,18 @@ export class ProductsController {
   @ApiOperation(PRODUCTS_API_OPTIONS.website.operation)
   getWebsiteProducts() {
     return this.productsService.getWebsiteProducts();
+  }
+
+  @Get(PRODUCTS_API_OPTIONS.websiteByUrl.path)
+  @ApiOperation(PRODUCTS_API_OPTIONS.websiteByUrl.operation)
+  @ApiParam({
+    name: 'productUrl',
+    description:
+      'Product URL path, for example products/wireless-headphones.',
+    example: 'products/wireless-headphones',
+  })
+  getWebsiteProductByUrl(@Param('productUrl') productUrl: string | string[]) {
+    return this.productsService.getWebsiteProductByUrl(productUrl);
   }
 
   // Dashboard API

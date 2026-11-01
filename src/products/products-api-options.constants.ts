@@ -6,6 +6,10 @@ export const PRODUCTS_API_OPTIONS = {
     path: 'website',
     operation: { summary: 'Get public website products' },
   },
+  websiteByUrl: {
+    path: 'website/*productUrl',
+    operation: { summary: 'Get a public website product by URL' },
+  },
   dashboard: {
     path: 'dashboard',
     operation: { summary: 'Get all products for dashboard' },

@@ -8,6 +8,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { QueryFailedError, Repository } from 'typeorm';
 import { ErrorCodes } from '../common/constants/error-codes.enum.js';
 import { ErrorMessages } from '../common/constants/error-messages.js';
+import { SuccessCodes } from '../common/constants/success-codes.enum.js';
+import { SuccessMessages } from '../common/constants/success-messages.js';
 import { CreateProductDto } from './dto/create-product.dto.js';
 import { UpdateProductDto } from './dto/update-product.dto.js';
 import { Product } from './entities/product.entity.js';
@@ -55,6 +57,7 @@ export class ProductsService {
       sellingPrice: dto.sellingPrice.toFixed(2),
       stockQuantity: dto.stockQuantity,
       minimumStockThreshold: dto.minimumStockThreshold,
+      visiableOnWebsite: dto.visiableOnWebsite ?? false,
     });
 
     try {
@@ -105,7 +108,9 @@ export class ProductsService {
       throw new NotFoundException(ErrorMessages[ErrorCodes.PRODUCT_NOT_FOUND]);
     }
 
-    return { message: 'Product deleted successfully' };
+    return {
+      message: SuccessMessages[SuccessCodes.PRODUCT_DELETED_SUCCESSFULLY],
+    };
   }
 
   private throwIfDuplicateProductValue(error: unknown): void {
@@ -145,15 +150,17 @@ export class ProductsService {
 
   async getWebsiteProducts() {
     const products = await this.productRepository.find({
+      where: { visiableOnWebsite: true },
       select: {
         id: true,
         name: true,
+        sku: true,
+        model: true,
         image: true,
         category: true,
         brand: true,
         sellingPrice: true,
         productUrl: true,
-        createdAt: true,
       },
       order: {
         createdAt: 'DESC',
@@ -161,6 +168,39 @@ export class ProductsService {
     });
 
     return products.map((product) => this.withThumbnail(product));
+  }
+
+  async getWebsiteProductByUrl(productUrl: string | string[]) {
+    const normalizedProductUrl =
+      `/${Array.isArray(productUrl) ? productUrl.join('/') : productUrl}`.replace(
+        /^\/+/,
+        '/',
+      );
+    const product = await this.productRepository.findOne({
+      where: {
+        productUrl: normalizedProductUrl,
+        visiableOnWebsite: true,
+      },
+      select: {
+        id: true,
+        name: true,
+        sku: true,
+        model: true,
+        image: true,
+        category: true,
+        brand: true,
+        sellingPrice: true,
+        productUrl: true,
+        stockQuantity: true,
+        barcode: true,
+      },
+    });
+
+    if (!product) {
+      throw new NotFoundException(ErrorMessages[ErrorCodes.PRODUCT_NOT_FOUND]);
+    }
+
+    return this.withThumbnail(product);
   }
 
   async getDashboardProducts() {
@@ -173,14 +213,13 @@ export class ProductsService {
     return products.map((product) => this.withThumbnail(product));
   }
 
-  
   async getDashboardProductById(id: number) {
     const product = await this.productRepository.findOne({
       where: { id },
     });
 
     if (!product) {
-      throw new NotFoundException('Product not found');
+      throw new NotFoundException(ErrorMessages[ErrorCodes.PRODUCT_NOT_FOUND]);
     }
 
     return this.withThumbnail(product);
